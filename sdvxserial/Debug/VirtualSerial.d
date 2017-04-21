@@ -119,7 +119,7 @@ VirtualSerial.d VirtualSerial.o: .././VirtualSerial.c \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../Common/CDCClassCommon.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/StillImageClass.h \
  ../src/LUFA/LUFA/Platform/Platform.h \
- ../src/LUFA/LUFA/Platform/../Common/Common.h
+ ../src/LUFA/LUFA/Platform/../Common/Common.h .././encoder.h
 
 .././VirtualSerial.h:
 
@@ -362,3 +362,5 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 ../src/LUFA/LUFA/Platform/Platform.h:
 
 ../src/LUFA/LUFA/Platform/../Common/Common.h:
+
+.././encoder.h:

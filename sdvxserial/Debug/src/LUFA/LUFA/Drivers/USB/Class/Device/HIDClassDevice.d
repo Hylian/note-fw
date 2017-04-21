@@ -40,15 +40,15 @@ src/LUFA/LUFA/Drivers/USB/Class/Device/HIDClassDevice.d \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/USBMode.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/USBController.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/USBController_AVR8.h \
- ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../../../../Common/Common.h \
+ c:\users\edward\documents\github\sdvx-fw\sdvxserial\src\lufa\lufa\common\common.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../USBMode.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../Events.h \
- ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../../../../Common/Common.h \
+ c:\users\edward\documents\github\sdvx-fw\sdvxserial\src\lufa\lufa\common\common.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../USBMode.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../USBTask.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../USBInterrupt.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/USBInterrupt_AVR8.h \
- ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/../../../../Common/Common.h \
+ c:\users\edward\documents\github\sdvx-fw\sdvxserial\src\lufa\lufa\common\common.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/../USBMode.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/../Events.h \
  ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/../USBController.h \
@@ -198,13 +198,13 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/USBController_AVR8.h:
 
-../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../../../../Common/Common.h:
+c:\users\edward\documents\github\sdvx-fw\sdvxserial\src\lufa\lufa\common\common.h:
 
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../USBMode.h:
 
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../Events.h:
 
-../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../../../../Common/Common.h:
+c:\users\edward\documents\github\sdvx-fw\sdvxserial\src\lufa\lufa\common\common.h:
 
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../USBMode.h:
 
@@ -214,7 +214,7 @@ c:\program\ files\ (x86)\atmel\studio\7.0\toolchain\avr8\avr8-gnu-toolchain\avr\
 
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/USBInterrupt_AVR8.h:
 
-../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/../../../../Common/Common.h:
+c:\users\edward\documents\github\sdvx-fw\sdvxserial\src\lufa\lufa\common\common.h:
 
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/../../Core/AVR8/../AVR8/../USBMode.h:
 

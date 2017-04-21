@@ -68,6 +68,7 @@ SUBDIRS :=  \
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS +=  \
 ../Descriptors.c \
+../encoder.c \
 ../src/LUFA/LUFA/Drivers/USB/Class/Common/HIDParser.c \
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/AudioClassDevice.c \
 ../src/LUFA/LUFA/Drivers/USB/Class/Device/CDCClassDevice.c \
@@ -113,6 +114,7 @@ ASM_SRCS +=
 
 OBJS +=  \
 Descriptors.o \
+encoder.o \
 src/LUFA/LUFA/Drivers/USB/Class/Common/HIDParser.o \
 src/LUFA/LUFA/Drivers/USB/Class/Device/AudioClassDevice.o \
 src/LUFA/LUFA/Drivers/USB/Class/Device/CDCClassDevice.o \
@@ -151,6 +153,7 @@ VirtualSerial.o
 
 OBJS_AS_ARGS +=  \
 Descriptors.o \
+encoder.o \
 src/LUFA/LUFA/Drivers/USB/Class/Common/HIDParser.o \
 src/LUFA/LUFA/Drivers/USB/Class/Device/AudioClassDevice.o \
 src/LUFA/LUFA/Drivers/USB/Class/Device/CDCClassDevice.o \
@@ -189,6 +192,7 @@ VirtualSerial.o
 
 C_DEPS +=  \
 Descriptors.d \
+encoder.d \
 src/LUFA/LUFA/Drivers/USB/Class/Common/HIDParser.d \
 src/LUFA/LUFA/Drivers/USB/Class/Device/AudioClassDevice.d \
 src/LUFA/LUFA/Drivers/USB/Class/Device/CDCClassDevice.d \
@@ -227,6 +231,7 @@ VirtualSerial.d
 
 C_DEPS_AS_ARGS +=  \
 Descriptors.d \
+encoder.d \
 src/LUFA/LUFA/Drivers/USB/Class/Common/HIDParser.d \
 src/LUFA/LUFA/Drivers/USB/Class/Device/AudioClassDevice.d \
 src/LUFA/LUFA/Drivers/USB/Class/Device/CDCClassDevice.d \
@@ -277,6 +282,8 @@ LINKER_SCRIPT_DEP+=
 
 
 # AVR32/GNU C Compiler
+
+
 
 
 

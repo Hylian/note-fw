@@ -4,6 +4,8 @@
 
 Descriptors.c
 
+encoder.c
+
 src\LUFA\LUFA\Drivers\USB\Class\Common\HIDParser.c
 
 src\LUFA\LUFA\Drivers\USB\Class\Device\AudioClassDevice.c
