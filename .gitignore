@@ -84,4 +84,4 @@ $RECYCLE.BIN/
 
 */Debug/*
 
-*/.vs/*
+*.vs/*
