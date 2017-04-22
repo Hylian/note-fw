@@ -80,11 +80,30 @@ void SetupHardware(void)
 /** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */
 void SendSerial(void)
 {
-  char*       ReportString[30];
-  sprintf(ReportString, "Left: %i, Right: %i", EncoderGetLeftDelta(), EncoderGetRightDelta());
+  char      ReportString[30];
+  int leftdelta, rightdelta;
+  leftdelta = EncoderGetLeftDelta();
+  rightdelta = EncoderGetRightDelta();
 
-  /* Write the string to the virtual COM port via the created character stream */
-  fputs(ReportString, &USBSerialStream);
+  static uint8_t count;
+  static uint8_t prev_port;
+  uint8_t port = PINB;
+  if (port ^ prev_port)
+  {
+    sprintf(ReportString, "%i %i\r\n", (bool) (port & 1), (bool) (port & (1<<7)));
+    fputs(ReportString, &USBSerialStream);
+  }
+prev_port = port;
+  
+  //if (leftdelta || rightdelta) {
+    //sprintf(ReportString, "Left: %i, Right: %i\r\n", leftdelta, rightdelta);
+	///* Write the string to the virtual COM port via the created character stream */
+	//fputs(ReportString, &USBSerialStream);
+  //}
+  
+  
+
+
 
   /* Alternatively, without the stream: */
   // CDC_Device_SendString(&VirtualSerial_CDC_Interface, ReportString);

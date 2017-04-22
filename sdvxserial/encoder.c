@@ -24,26 +24,30 @@ void EncoderUpdate(void)
   bool al_changed, bl_changed, ar_changed, br_changed;
   bool l_cw = 0, l_ccw = 0, r_cw = 0, r_ccw = 0;
   
-  al = (bool) (PINB & AL_MASK);
-  bl = (bool) (PINB & BL_MASK);
-  ar = (bool) (PINB & AR_MASK);
-  br = (bool) (PINB & BR_MASK);
+  uint8_t pins = PINB;
+  
+  al = (bool) (pins & AL_MASK);
+  bl = (bool) (pins & BL_MASK);
+  ar = (bool) (pins & AR_MASK);
+  br = (bool) (pins & BR_MASK);
   
   al_changed = al ^ al_prev;
   bl_changed = bl ^ bl_prev;
   ar_changed = ar ^ ar_prev;
   br_changed = br ^ br_prev;
 
-  if (!(al_changed && bl_changed)) {
+  if (al_changed ^ bl_changed) {
     l_cw = (al_changed & ((al & !bl) || (!al & bl))) ||
            (bl_changed & ((bl & al) || (!bl & !al)));
-    l_ccw = (al_changed || bl_changed) && !l_cw;
+    l_ccw = !l_cw;
   }
 
-  if (!(ar_changed && br_changed)) {
-    r_cw = (ar_changed & ((ar & !br) || (!ar & br))) ||
-           (br_changed & ((br & ar) || (!br & !ar)));
-    r_ccw = (ar_changed || br_changed) && !r_cw;
+  if (ar_changed ^ br_changed) {
+    r_cw = (ar_changed && ((ar && !br) || (!ar && br))) ||
+           (br_changed && ((br && ar) || (!br && !ar)));
+    /*r_ccw = (ar_changed && ((!ar && !br) || (ar && br))) ||
+            (br_changed && ((br && !ar) || (!br && ar)));*/
+    r_ccw = !r_cw;
   }
 
   l_delta = l_delta + l_cw - l_ccw;
