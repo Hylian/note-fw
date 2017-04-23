@@ -3,11 +3,12 @@
 
 #include "encoder.h"
 #include <avr/io.h>
+#include <stddef.h>
 #include <stdbool.h>
 
 void EncoderInit(void);
 void EncoderUpdate(void);
-int EncoderGetLeftDelta(void);
-int EncoderGetRightDelta(void);
+int8_t EncoderGetLeftDelta(void);
+int8_t EncoderGetRightDelta(void);
 
 #endif /* ENCODER_H_ */

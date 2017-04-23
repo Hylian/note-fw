@@ -1,5 +1,5 @@
 #include "VirtualSerial.h"
-#include "encoder2.h"
+#include "encoder.h"
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -51,6 +51,7 @@ int main(void)
 
   for (;;)
   {
+    Delay_MS(1);
     EncoderUpdate();
     SendSerial();
     
@@ -81,7 +82,7 @@ void SetupHardware(void)
 void SendSerial(void)
 {
   char ReportString[30];
-  int delta = EncoderGetDelta();
+  int delta = EncoderGetRightDelta();
 
   if (delta)
   {

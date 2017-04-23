@@ -647,10 +647,10 @@
     <None Include="src\LUFA\LUFA\Drivers\USB\Class\CDCClass.h">
       <SubType>compile</SubType>
     </None>
-    <Compile Include="encoder2.c">
+    <Compile Include="encoder.c">
       <SubType>compile</SubType>
     </Compile>
-    <Compile Include="encoder2.h">
+    <Compile Include="encoder.h">
       <SubType>compile</SubType>
     </Compile>
     <Compile Include="src\LUFA\LUFA\Drivers\USB\Class\Common\HIDParser.c">
