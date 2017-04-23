@@ -1,5 +1,5 @@
 #include "VirtualSerial.h"
-#include "encoder.h"
+#include "encoder2.h"
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -80,20 +80,14 @@ void SetupHardware(void)
 /** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */
 void SendSerial(void)
 {
-  char      ReportString[30];
-  int leftdelta, rightdelta;
-  leftdelta = EncoderGetLeftDelta();
-  rightdelta = EncoderGetRightDelta();
+  char ReportString[30];
+  int delta = EncoderGetDelta();
 
-  static uint8_t count;
-  static uint8_t prev_port;
-  uint8_t port = PINB;
-  if (port ^ prev_port)
+  if (delta)
   {
-    sprintf(ReportString, "%i %i\r\n", (bool) (port & 1), (bool) (port & (1<<7)));
+    sprintf(ReportString, "%i\r\n", delta);
     fputs(ReportString, &USBSerialStream);
   }
-prev_port = port;
   
   //if (leftdelta || rightdelta) {
     //sprintf(ReportString, "Left: %i, Right: %i\r\n", leftdelta, rightdelta);
