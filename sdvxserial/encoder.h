@@ -2,6 +2,7 @@
 #define ENCODER_H_
 
 #include "encoder.h"
+#include "debounce.h"
 #include <avr/io.h>
 #include <stddef.h>
 #include <stdbool.h>

@@ -356,6 +356,12 @@
     <Folder Include="src\LUFA\LUFA\Platform\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="debounce.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="debounce.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="Descriptors.c">
       <SubType>compile</SubType>
     </Compile>

@@ -1,10 +1,5 @@
 #include "encoder.h"
 
-#define AL_MASK (1<<5)
-#define BL_MASK (1<<6)
-#define AR_MASK (1<<7)
-#define BR_MASK (1<<0)
-
 static uint8_t old_AB_left = 0;
 static uint8_t old_AB_right = 0;
 static const int8_t enc_states[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
@@ -18,11 +13,10 @@ void EncoderInit(void)
   
 void EncoderUpdate(void)
 {
-  uint8_t port = PINB;
-  bool new_A_left = (bool) (port & AL_MASK);
-  bool new_B_left = (bool) (port & BL_MASK);
-  bool new_A_right = (bool) (port & AR_MASK);
-  bool new_B_right = (bool) (port & BR_MASK);
+  bool new_A_left = DebounceGetLevel(ENC_LEFT_A);
+  bool new_B_left = DebounceGetLevel(ENC_LEFT_B);
+  bool new_A_right = DebounceGetLevel(ENC_RIGHT_A);
+  bool new_B_right = DebounceGetLevel(ENC_RIGHT_B);
 
   old_AB_left <<= 2;
   old_AB_left |= (uint8_t) ( (new_A_left << 1) | new_B_left );

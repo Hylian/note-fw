@@ -1,5 +1,6 @@
 #include "VirtualSerial.h"
 #include "encoder.h"
+#include "debounce.h"
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -51,7 +52,8 @@ int main(void)
 
   for (;;)
   {
-    Delay_MS(1);
+    //Delay_MS(1);
+    DebounceUpdate();
     EncoderUpdate();
     SendSerial();
     
@@ -95,10 +97,6 @@ void SendSerial(void)
 	///* Write the string to the virtual COM port via the created character stream */
 	//fputs(ReportString, &USBSerialStream);
   //}
-  
-  
-
-
 
   /* Alternatively, without the stream: */
   // CDC_Device_SendString(&VirtualSerial_CDC_Interface, ReportString);
