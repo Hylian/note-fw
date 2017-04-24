@@ -659,6 +659,12 @@
     <Compile Include="encoder.h">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="neopixel.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="neopixel.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="src\LUFA\LUFA\Drivers\USB\Class\Common\HIDParser.c">
       <SubType>compile</SubType>
     </Compile>

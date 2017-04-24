@@ -1,6 +1,7 @@
 #include "VirtualSerial.h"
 #include "encoder.h"
 #include "debounce.h"
+#include "neopixel.h"
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -56,6 +57,7 @@ int main(void)
     DebounceUpdate();
     EncoderUpdate();
     SendSerial();
+    NeoPixelUpdate();
     
     /* Must throw away unused bytes from the host, or it will lock up while waiting for the device */
     CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
@@ -79,13 +81,18 @@ void SetupHardware(void)
   USB_Init();
   EncoderInit();
   DebounceInit();
+  NeoPixelInit();
+  NeoPixelSetPixelColor(0, 100, 100, 100);
 }
 
 /** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */
 void SendSerial(void)
 {
+  static uint8_t color = 100;
   char ReportString[30];
   int delta = EncoderGetRightDelta();
+  color += delta;
+  NeoPixelSetPixelColor(0, color, 20, 20);
 
   if (delta)
   {
