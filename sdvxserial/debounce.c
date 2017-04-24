@@ -5,10 +5,9 @@ void DebounceInit(void)
   /* Setup Debounce Timer */
   TCCR0A |= (1 << COM0A1) | (1 << COM0A0); // Set OC0A on compare
   TCNT0 = 0; // Reset timer count
-  OCR0A = 0xFF; // Compare value
+  OCR0A = DEBOUNCE_TIMER_COMPARE_COUNT; // Compare value
   TIFR0 = (1 << OCF0A); // Clear compare flag
-  TCCR0B |= (1 << CS02) | (1 << CS00); // Select clock : 1024 prescale div
-  /* 16 MHz / 1024 = 15.625 kHz -> 64 us per tick -> 15.63 ticks per ms */
+  TCCR0B |= (1 << CS01) | (1 << CS00); // Select clock : 64 prescale div -> 250 kHz
 }
 
 void DebounceUpdate(void)
@@ -28,6 +27,7 @@ void DebounceUpdate(void)
       }
     }
     TIFR0 = (1 << OCF0A);
+    TCNT0 = 0;
   }
 }
 

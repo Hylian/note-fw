@@ -78,6 +78,7 @@ void SetupHardware(void)
   /* Hardware Initialization */
   USB_Init();
   EncoderInit();
+  DebounceInit();
 }
 
 /** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */

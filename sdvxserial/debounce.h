@@ -6,7 +6,8 @@
 #include <stdbool.h>
 #include <avr/io.h>
 
-#define DEBOUNCE_TRIGGER_COUNT 20 // 1.2 ms
+#define DEBOUNCE_TIMER_COMPARE_COUNT 8
+#define DEBOUNCE_TRIGGER_COUNT 30
 
 typedef enum {
   ENC_LEFT_A = 0,
