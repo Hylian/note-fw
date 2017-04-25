@@ -57,6 +57,12 @@
 		/** Size in bytes of the CDC data IN and OUT endpoints. */
 		#define CDC_TXRX_EPSIZE                16
 
+		/** Endpoint address of the Mouse HID reporting IN endpoint. */
+		#define MOUSE_EPADDR                   (ENDPOINT_DIR_IN  | 1)
+
+		/** Size in bytes of the Mouse HID reporting IN endpoint. */
+		#define MOUSE_EPSIZE                   8
+
 	/* Type Defines: */
 		/** Type define for the device configuration descriptor structure. This must be defined in the
 		 *  application code, as the configuration descriptor contains several sub-descriptors which
@@ -67,6 +73,7 @@
 			USB_Descriptor_Configuration_Header_t    Config;
 
 			// CDC Control Interface
+			USB_Descriptor_Interface_Association_t   CDC_IAD;
 			USB_Descriptor_Interface_t               CDC_CCI_Interface;
 			USB_CDC_Descriptor_FunctionalHeader_t    CDC_Functional_Header;
 			USB_CDC_Descriptor_FunctionalACM_t       CDC_Functional_ACM;
@@ -77,6 +84,11 @@
 			USB_Descriptor_Interface_t               CDC_DCI_Interface;
 			USB_Descriptor_Endpoint_t                CDC_DataOutEndpoint;
 			USB_Descriptor_Endpoint_t                CDC_DataInEndpoint;
+
+			// Mouse HID Interface
+			USB_Descriptor_Interface_t               HID_Interface;
+			USB_HID_Descriptor_HID_t                 HID_MouseHID;
+	        USB_Descriptor_Endpoint_t                HID_ReportINEndpoint;
 		} USB_Descriptor_Configuration_t;
 
 		/** Enum for the device interface descriptor IDs within the device. Each interface descriptor
@@ -87,6 +99,7 @@
 		{
 			INTERFACE_ID_CDC_CCI = 0, /**< CDC CCI interface descriptor ID */
 			INTERFACE_ID_CDC_DCI = 1, /**< CDC DCI interface descriptor ID */
+			INTERFACE_ID_Mouse   = 2, /**< Mouse interface descriptor ID */
 		};
 
 		/** Enum for the device string descriptor IDs within the device. Each string descriptor should
