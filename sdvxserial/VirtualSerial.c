@@ -38,8 +38,32 @@ USB_ClassInfo_CDC_Device_t VirtualSerial_CDC_Interface =
  */
 static FILE USBSerialStream;
 
+/** Buffer to hold the previously generated Keyboard HID report, for comparison purposes inside the HID class driver. */
+static uint8_t PrevKeyboardHIDReportBuffer[sizeof(USB_KeyboardReport_Data_t)];
+
 /** Buffer to hold the previously generated Mouse HID report, for comparison purposes inside the HID class driver. */
 static uint8_t PrevMouseHIDReportBuffer[sizeof(USB_MouseReport_Data_t)];
+
+/** LUFA HID Class driver interface configuration and state information. This structure is
+ *  passed to all HID Class driver functions, so that multiple instances of the same class
+ *  within a device can be differentiated from one another. This is for the keyboard HID
+ *  interface within the device.
+ */
+USB_ClassInfo_HID_Device_t Keyboard_HID_Interface =
+	{
+		.Config =
+			{
+				.InterfaceNumber              = INTERFACE_ID_Keyboard,
+				.ReportINEndpoint             =
+					{
+						.Address              = KEYBOARD_IN_EPADDR,
+						.Size                 = HID_EPSIZE,
+						.Banks                = 1,
+					},
+				.PrevReportINBuffer           = PrevKeyboardHIDReportBuffer,
+				.PrevReportINBufferSize       = sizeof(PrevKeyboardHIDReportBuffer),
+			},
+	};
 
 /** LUFA HID Class driver interface configuration and state information. This structure is
  *  passed to all HID Class driver functions, so that multiple instances of the same class
@@ -60,7 +84,6 @@ USB_ClassInfo_HID_Device_t Mouse_HID_Interface =
 				.PrevReportINBufferSize         = sizeof(PrevMouseHIDReportBuffer),
 			},
 	};
-
 
 /** Main program entry point. This routine contains the overall program flow, including initial
  *  setup of all components and the main program loop.
@@ -86,6 +109,7 @@ int main(void)
     CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
     
     CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
+    HID_Device_USBTask(&Keyboard_HID_Interface);
     HID_Device_USBTask(&Mouse_HID_Interface);
     USB_USBTask();
   }
@@ -142,6 +166,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 {
 	bool ConfigSuccess = true;
 
+  ConfigSuccess &= HID_Device_ConfigureEndpoints(&Keyboard_HID_Interface);
 	ConfigSuccess &= HID_Device_ConfigureEndpoints(&Mouse_HID_Interface);
 	ConfigSuccess &= CDC_Device_ConfigureEndpoints(&VirtualSerial_CDC_Interface);
 
@@ -151,13 +176,15 @@ void EVENT_USB_Device_ConfigurationChanged(void)
 /** Event handler for the library USB Control Request reception event. */
 void EVENT_USB_Device_ControlRequest(void)
 {
-  CDC_Device_ProcessControlRequest(&VirtualSerial_CDC_Interface);
+  HID_Device_ProcessControlRequest(&Keyboard_HID_Interface);
   HID_Device_ProcessControlRequest(&Mouse_HID_Interface);
+  CDC_Device_ProcessControlRequest(&VirtualSerial_CDC_Interface);
 }
 
 /** Event handler for the USB device Start Of Frame event. */
 void EVENT_USB_Device_StartOfFrame(void)
 {
+  HID_Device_MillisecondElapsed(&Keyboard_HID_Interface);
   HID_Device_MillisecondElapsed(&Mouse_HID_Interface);
 }
 
@@ -177,13 +204,25 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
                                          void* ReportData,
                                          uint16_t* const ReportSize)
 {
-	USB_MouseReport_Data_t* MouseReport = (USB_MouseReport_Data_t*)ReportData;
+  if (HIDInterfaceInfo == &Keyboard_HID_Interface) {
+    USB_KeyboardReport_Data_t* KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
+
+    //KeyboardReport->Modifier = HID_KEYBOARD_MODIFIER_LEFTSHIFT;
+    if(DebounceGetLevel(BT_A))
+      KeyboardReport->KeyCode[0] = HID_KEYBOARD_SC_A;
+    
+    *ReportSize = sizeof(USB_KeyboardReport_Data_t);
+    return false;
+  } else if (HIDInterfaceInfo == &Mouse_HID_Interface) {
+	  USB_MouseReport_Data_t* MouseReport = (USB_MouseReport_Data_t*)ReportData;
 
 	  MouseReport->Y = EncoderGetRightDelta();
 	  MouseReport->X = EncoderGetLeftDelta();
 
-	*ReportSize = sizeof(USB_MouseReport_Data_t);
-	return true;
+	  *ReportSize = sizeof(USB_MouseReport_Data_t);
+	  return true;
+  }
+  return false;
 }
 
 /** HID class driver callback function for the processing of HID reports from the host.
