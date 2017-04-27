@@ -43,13 +43,13 @@
 
 	/* Macros: */
 		/** Endpoint address of the CDC device-to-host notification IN endpoint. */
-		#define CDC_NOTIFICATION_EPADDR        (ENDPOINT_DIR_IN  | 2)
+		#define CDC_NOTIFICATION_EPADDR        (ENDPOINT_DIR_IN  | 3)
 
 		/** Endpoint address of the CDC device-to-host data IN endpoint. */
-		#define CDC_TX_EPADDR                  (ENDPOINT_DIR_IN  | 3)
+		#define CDC_TX_EPADDR                  (ENDPOINT_DIR_IN  | 4)
 
 		/** Endpoint address of the CDC host-to-device data OUT endpoint. */
-		#define CDC_RX_EPADDR                  (ENDPOINT_DIR_OUT | 4)
+		#define CDC_RX_EPADDR                  (ENDPOINT_DIR_OUT | 5)
 
 		/** Size in bytes of the CDC device-to-host notification IN endpoint. */
 		#define CDC_NOTIFICATION_EPSIZE        8
@@ -58,10 +58,20 @@
 		#define CDC_TXRX_EPSIZE                16
 
 		/** Endpoint address of the Mouse HID reporting IN endpoint. */
-		#define MOUSE_EPADDR                   (ENDPOINT_DIR_IN  | 1)
+		#define MOUSE_EPADDR                   (ENDPOINT_DIR_IN | 3)
 
 		/** Size in bytes of the Mouse HID reporting IN endpoint. */
 		#define MOUSE_EPSIZE                   8
+    
+    /** Endpoint address of the Keyboard HID reporting IN endpoint. */
+    #define KEYBOARD_IN_EPADDR        (ENDPOINT_DIR_IN | 1)
+
+    /** Endpoint address of the Mouse HID reporting IN endpoint. */
+    #define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 2)
+
+    /** Size in bytes of each of the HID reporting IN endpoints. */
+    #define HID_EPSIZE                8
+
 
 	/* Type Defines: */
 		/** Type define for the device configuration descriptor structure. This must be defined in the
@@ -119,15 +129,6 @@
 			STRING_ID_Product      = 2, /**< Product string ID */
 		};
     
-  /* Macros: */
-  /** Endpoint address of the Keyboard HID reporting IN endpoint. */
-  #define KEYBOARD_IN_EPADDR        (ENDPOINT_DIR_IN | 1)
-
-  /** Endpoint address of the Mouse HID reporting IN endpoint. */
-  #define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 3)
-
-  /** Size in bytes of each of the HID reporting IN endpoints. */
-  #define HID_EPSIZE                8
 
 	/* Function Prototypes: */
 		uint16_t CALLBACK_USB_GetDescriptor(const uint16_t wValue,

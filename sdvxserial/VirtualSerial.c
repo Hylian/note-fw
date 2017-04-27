@@ -100,10 +100,10 @@ int main(void)
   for (;;)
   {
     //Delay_MS(1);
-    DebounceUpdate();
-    EncoderUpdate();
-    SendSerial();
-    NeoPixelUpdate();
+    //DebounceUpdate();
+    //EncoderUpdate();
+    //SendSerial();
+    //NeoPixelUpdate();
     
     /* Must throw away unused bytes from the host, or it will lock up while waiting for the device */
     CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
@@ -126,11 +126,12 @@ void SetupHardware(void)
   clock_prescale_set(clock_div_1);
 
   /* Hardware Initialization */
-  USB_Init();
   EncoderInit();
   DebounceInit();
   NeoPixelInit();
   NeoPixelSetPixelColor(0, 100, 100, 100);
+  USB_Init();
+  
 }
 
 /** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */
@@ -152,13 +153,11 @@ void SendSerial(void)
 /** Event handler for the library USB Connection event. */
 void EVENT_USB_Device_Connect(void)
 {
-
 }
 
 /** Event handler for the library USB Disconnection event. */
 void EVENT_USB_Device_Disconnect(void)
 {
-
 }
 
 /** Event handler for the library USB Configuration Changed event. */
@@ -169,7 +168,7 @@ void EVENT_USB_Device_ConfigurationChanged(void)
   ConfigSuccess &= HID_Device_ConfigureEndpoints(&Keyboard_HID_Interface);
 	ConfigSuccess &= HID_Device_ConfigureEndpoints(&Mouse_HID_Interface);
 	ConfigSuccess &= CDC_Device_ConfigureEndpoints(&VirtualSerial_CDC_Interface);
-
+  
 	USB_Device_EnableSOFEvents();
 }
 
@@ -208,7 +207,7 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
     USB_KeyboardReport_Data_t* KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
 
     //KeyboardReport->Modifier = HID_KEYBOARD_MODIFIER_LEFTSHIFT;
-    if(DebounceGetLevel(BT_A))
+    //if(DebounceGetLevel(BT_A))
       KeyboardReport->KeyCode[0] = HID_KEYBOARD_SC_A;
     
     *ReportSize = sizeof(USB_KeyboardReport_Data_t);
@@ -218,6 +217,7 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 
 	  MouseReport->Y = EncoderGetRightDelta();
 	  MouseReport->X = EncoderGetLeftDelta();
+    MouseReport->X = -1;
 
 	  *ReportSize = sizeof(USB_MouseReport_Data_t);
 	  return true;
