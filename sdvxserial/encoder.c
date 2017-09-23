@@ -24,8 +24,12 @@ void EncoderUpdate(void)
   old_AB_right <<= 2;
   old_AB_right |= (uint8_t) ( (new_A_right << 1) | new_B_right );
   
-  delta_left = enc_states[( old_AB_left & 0x0f )];
-  delta_right = enc_states[( old_AB_right & 0x0f )];
+  if (delta_left > -126 && delta_left < 127) {
+    delta_left += enc_states[( old_AB_left & 0x0f )];
+  }    
+  if (delta_right > -126 && delta_right < 127) {
+    delta_right += enc_states[( old_AB_right & 0x0f )];
+  }    
 }
 
 int8_t EncoderGetLeftDelta(void)

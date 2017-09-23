@@ -14,7 +14,7 @@ void DebounceUpdate(void)
 {
   sPinRef *pr;
   if (TIFR0 & (1 << OCF0A)) {
-    for (ePinId p = 0; p < BT_A/*NUM_PINS*/; p++) {
+    for (ePinId p = 0; p < NUM_PINS; p++) {
       pr = &pins[p];
       if (pr->level != (bool) (pr->mask & *(pr->port))) {
         pr->count++;

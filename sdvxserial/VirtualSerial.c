@@ -2,6 +2,7 @@
 #include "encoder.h"
 #include "debounce.h"
 #include "neopixel.h"
+#include "led.h"
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
  *  passed to all CDC Class driver functions, so that multiple instances of the same class
@@ -76,8 +77,8 @@ USB_ClassInfo_HID_Device_t Mouse_HID_Interface =
 				.InterfaceNumber                = INTERFACE_ID_Mouse,
 				.ReportINEndpoint               =
 					{
-						.Address                = MOUSE_EPADDR,
-						.Size                   = MOUSE_EPSIZE,
+						.Address                = MOUSE_IN_EPADDR,
+						.Size                   = HID_EPSIZE,
 						.Banks                  = 1,
 					},
 				.PrevReportINBuffer             = PrevMouseHIDReportBuffer,
@@ -88,6 +89,9 @@ USB_ClassInfo_HID_Device_t Mouse_HID_Interface =
 /** Main program entry point. This routine contains the overall program flow, including initial
  *  setup of all components and the main program loop.
  */
+
+uint16_t count = 0;
+
 int main(void)
 {
   SetupHardware();
@@ -100,17 +104,20 @@ int main(void)
   for (;;)
   {
     //Delay_MS(1);
-    //DebounceUpdate();
-    //EncoderUpdate();
+    DebounceUpdate();
+    EncoderUpdate();
+    UpdateLeds();
+    NeoPixelUpdate();
+
     //SendSerial();
-    //NeoPixelUpdate();
     
     /* Must throw away unused bytes from the host, or it will lock up while waiting for the device */
     CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
     
     CDC_Device_USBTask(&VirtualSerial_CDC_Interface);
-    HID_Device_USBTask(&Keyboard_HID_Interface);
     HID_Device_USBTask(&Mouse_HID_Interface);
+    HID_Device_USBTask(&Keyboard_HID_Interface);
+    
     USB_USBTask();
   }
 }
@@ -128,10 +135,29 @@ void SetupHardware(void)
   /* Hardware Initialization */
   EncoderInit();
   DebounceInit();
+  
+  /* Configure all button pins to use internal pullup */
+  PORTD |= (1<<7) | (1<<4) | (1<<2) | (1<<0) | (1<<6) | (1<<1);
+  PORTE |= (1<<2);
+  PORTB |= (1<<0) | (1<<4) | (1<<5) | (1<<7);
+  
+  /* Set all LEDs to white initially */
   NeoPixelInit();
   NeoPixelSetPixelColor(0, 100, 100, 100);
-  USB_Init();
+  NeoPixelSetPixelColor(1, 100, 100, 100);
+  NeoPixelSetPixelColor(2, 100, 100, 100);
+  NeoPixelSetPixelColor(3, 100, 100, 100);
+  NeoPixelSetPixelColor(4, 100, 100, 100);
+  NeoPixelSetPixelColor(5, 100, 100, 100);
+  NeoPixelSetPixelColor(6, 100, 100, 100);
+  NeoPixelSetPixelColor(7, 100, 100, 100);
+  NeoPixelSetPixelColor(8, 100, 100, 100);
+  NeoPixelSetPixelColor(9, 100, 100, 100);
+  NeoPixelSetPixelColor(10, 100, 100, 100);
+  NeoPixelSetPixelColor(11, 100, 100, 100);
+  NeoPixelSetBrightness(100);
   
+  USB_Init();  
 }
 
 /** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */
@@ -140,11 +166,14 @@ void SendSerial(void)
   static uint8_t color = 100;
   char ReportString[30];
   
-  //if (leftdelta || rightdelta) {
-    //sprintf(ReportString, "Left: %i, Right: %i\r\n", leftdelta, rightdelta);
+  uint8_t leftdelta = EncoderGetLeftDelta();
+  uint8_t rightdelta = EncoderGetRightDelta();
+  
+  if (leftdelta || rightdelta) {
+    sprintf(ReportString, "Left: %i, Right: %i\r\n", leftdelta, rightdelta);
 	///* Write the string to the virtual COM port via the created character stream */
-	//fputs(ReportString, &USBSerialStream);
-  //}
+	fputs(ReportString, &USBSerialStream);
+  }
 
   /* Alternatively, without the stream: */
   // CDC_Device_SendString(&VirtualSerial_CDC_Interface, ReportString);
@@ -194,7 +223,6 @@ void EVENT_USB_Device_StartOfFrame(void)
  *  \param[in]     ReportType  Type of the report to create, either HID_REPORT_ITEM_In or HID_REPORT_ITEM_Feature
  *  \param[out]    ReportData  Pointer to a buffer where the created report should be stored
  *  \param[out]    ReportSize  Number of bytes written in the report (or zero if no report is to be sent)
- *
  *  \return Boolean \c true to force the sending of the report, \c false to let the library determine if it needs to be sent
  */
 bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDInterfaceInfo,
@@ -207,18 +235,36 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
     USB_KeyboardReport_Data_t* KeyboardReport = (USB_KeyboardReport_Data_t*)ReportData;
 
     //KeyboardReport->Modifier = HID_KEYBOARD_MODIFIER_LEFTSHIFT;
-    //if(DebounceGetLevel(BT_A))
-      KeyboardReport->KeyCode[0] = HID_KEYBOARD_SC_A;
+    if (!DebounceGetLevel(BT_A)) {
+      KeyboardReport->KeyCode[0] = HID_KEYBOARD_SC_S;
+    }
+    if (!DebounceGetLevel(BT_B)) {
+      KeyboardReport->KeyCode[1] = HID_KEYBOARD_SC_D;
+    }
+    if (!DebounceGetLevel(BT_C)) {
+      KeyboardReport->KeyCode[2] = HID_KEYBOARD_SC_K;
+    }
+    if (!DebounceGetLevel(BT_D)) {
+      KeyboardReport->KeyCode[3] = HID_KEYBOARD_SC_L;
+    }
+    if (!DebounceGetLevel(FX_L)) {
+      KeyboardReport->KeyCode[4] = HID_KEYBOARD_SC_V;
+    }
+    if (!DebounceGetLevel(FX_R)) {
+      KeyboardReport->KeyCode[5] = HID_KEYBOARD_SC_M;
+    }
+    if (!DebounceGetLevel(START)) {
+      KeyboardReport->KeyCode[0] = HID_KEYBOARD_SC_ENTER;
+    }
     
     *ReportSize = sizeof(USB_KeyboardReport_Data_t);
     return false;
-  } else if (HIDInterfaceInfo == &Mouse_HID_Interface) {
+  } else {
 	  USB_MouseReport_Data_t* MouseReport = (USB_MouseReport_Data_t*)ReportData;
-
+    
 	  MouseReport->Y = EncoderGetRightDelta();
 	  MouseReport->X = EncoderGetLeftDelta();
-    MouseReport->X = -1;
-
+    
 	  *ReportSize = sizeof(USB_MouseReport_Data_t);
 	  return true;
   }

@@ -54,7 +54,7 @@ const USB_Descriptor_HIDReport_Datatype_t PROGMEM MouseReport[] =
 	 *   Buttons: 3
 	 *   Absolute screen coordinates: false
 	 */
-	HID_DESCRIPTOR_MOUSE(-1, 1, -1, 1, 3, false)
+	HID_DESCRIPTOR_MOUSE(-100, 100, -100, 100, 1, false)
 };
 
 /** Same as the MouseReport structure, but defines the keyboard HID interface's report structure. */
@@ -76,6 +76,7 @@ const USB_Descriptor_Device_t PROGMEM DeviceDescriptor =
 	.Header                 = {.Size = sizeof(USB_Descriptor_Device_t), .Type = DTYPE_Device},
 
 	.USBSpecification       = VERSION_BCD(1,1,0),
+
 	.Class                  = USB_CSCP_IADDeviceClass,
 	.SubClass               = USB_CSCP_IADDeviceSubclass,
 	.Protocol               = USB_CSCP_IADDeviceProtocol,
@@ -203,7 +204,7 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 			.EndpointAddress        = CDC_RX_EPADDR,
 			.Attributes             = (EP_TYPE_BULK | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 			.EndpointSize           = CDC_TXRX_EPSIZE,
-			.PollingIntervalMS      = 0x05
+			.PollingIntervalMS      = 0x10
 		},
 
 	.CDC_DataInEndpoint =
@@ -213,7 +214,7 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
 			.EndpointAddress        = CDC_TX_EPADDR,
 			.Attributes             = (EP_TYPE_BULK | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
 			.EndpointSize           = CDC_TXRX_EPSIZE,
-			.PollingIntervalMS      = 0x05
+			.PollingIntervalMS      = 0x10
 		},
     
   .HID1_KeyboardInterface =
@@ -250,7 +251,7 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
       .EndpointAddress        = KEYBOARD_IN_EPADDR,
       .Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
       .EndpointSize           = HID_EPSIZE,
-      .PollingIntervalMS      = 0x05
+      .PollingIntervalMS      = 0x01
     },
 
   .HID2_MouseInterface =
@@ -287,7 +288,7 @@ const USB_Descriptor_Configuration_t PROGMEM ConfigurationDescriptor =
       .EndpointAddress        = MOUSE_IN_EPADDR,
       .Attributes             = (EP_TYPE_INTERRUPT | ENDPOINT_ATTR_NO_SYNC | ENDPOINT_USAGE_DATA),
       .EndpointSize           = HID_EPSIZE,
-      .PollingIntervalMS      = 0x05
+      .PollingIntervalMS      = 0x01
     }
 
 };

@@ -6,8 +6,9 @@
 #include <stdbool.h>
 #include <avr/io.h>
 
-#define DEBOUNCE_TIMER_COMPARE_COUNT 8
-#define DEBOUNCE_TRIGGER_COUNT 30
+#define DEBOUNCE_TIMER_COMPARE_COUNT 50
+#define DEBOUNCE_TRIGGER_COUNT_BUTTON 2
+#define DEBOUNCE_TRIGGER_COUNT_ENCODER 5
 
 typedef enum {
   ENC_LEFT_A = 0,
@@ -26,6 +27,7 @@ typedef enum {
 
 typedef struct {
   uint8_t count;
+  const uint8_t trigger_count;
   bool level;
   const uint8_t mask;
   const volatile uint8_t *port;
@@ -36,30 +38,90 @@ static sPinRef pins[NUM_PINS] =
   {
     /* ENC_LEFT_A */
     .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
     .level = 0,
-    .mask = (1 << 5),
+    .mask = (1 << 4),
     .port = &PINB
   },
   {
     /* ENC_LEFT_B */
     .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
     .level = 0,
-    .mask = (1 << 6),
+    .mask = (1 << 5),
     .port = &PINB
   },
   {
     /* ENC_RIGHT_A */
     .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
     .level = 0,
-    .mask = (1 << 7),
+    .mask = (1 << 0),
     .port = &PINB
   },
   {
     /* ENC_RIGHT_B */
     .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
+    .level = 0,
+    .mask = (1 << 7),
+    .port = &PINB
+  },
+  {
+    /* BT_A */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
+    .level = 0,
+    .mask = (1 << 7),
+    .port = &PIND
+  },
+  {
+    /* BT_B */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 4),
+    .port = &PIND
+  },
+  {
+    /* BT_C */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 2),
+    .port = &PIND
+  },
+  {
+    /* BT_D */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
     .level = 0,
     .mask = (1 << 0),
-    .port = &PINB
+    .port = &PIND
+  },
+  {
+    /* FX-L */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 6),
+    .port = &PIND
+  },
+  {
+    /* FX-R */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 1),
+    .port = &PIND
+  },
+  {
+    /* Start */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 2),
+    .port = &PINE
   },
 };
 

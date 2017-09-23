@@ -56,18 +56,12 @@
 
 		/** Size in bytes of the CDC data IN and OUT endpoints. */
 		#define CDC_TXRX_EPSIZE                16
-
-		/** Endpoint address of the Mouse HID reporting IN endpoint. */
-		#define MOUSE_EPADDR                   (ENDPOINT_DIR_IN | 3)
-
-		/** Size in bytes of the Mouse HID reporting IN endpoint. */
-		#define MOUSE_EPSIZE                   8
     
     /** Endpoint address of the Keyboard HID reporting IN endpoint. */
-    #define KEYBOARD_IN_EPADDR        (ENDPOINT_DIR_IN | 1)
+    #define KEYBOARD_IN_EPADDR        (ENDPOINT_DIR_IN | 2)
 
     /** Endpoint address of the Mouse HID reporting IN endpoint. */
-    #define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 2)
+    #define MOUSE_IN_EPADDR           (ENDPOINT_DIR_IN | 1)
 
     /** Size in bytes of each of the HID reporting IN endpoints. */
     #define HID_EPSIZE                8
