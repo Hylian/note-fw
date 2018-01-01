@@ -1,5 +1,11 @@
 #include "encoder.h"
 
+#include <avr/io.h>
+#include <stdint.h>
+#include <stdbool.h>
+
+#include "debounce.h"
+
 static uint8_t old_AB_left = 0;
 static uint8_t old_AB_right = 0;
 static const int8_t enc_states[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};

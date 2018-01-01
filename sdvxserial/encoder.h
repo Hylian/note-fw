@@ -2,10 +2,7 @@
 #define ENCODER_H_
 
 #include "encoder.h"
-#include "debounce.h"
-#include <avr/io.h>
-#include <stddef.h>
-#include <stdbool.h>
+#include <stdint.h>
 
 void EncoderInit(void);
 void EncoderUpdate(void);

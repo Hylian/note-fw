@@ -1,7 +1,6 @@
 #include "VirtualSerial.h"
 #include "encoder.h"
 #include "debounce.h"
-#include "neopixel.h"
 #include "led.h"
 
 /** LUFA CDC Class driver interface configuration and state information. This structure is
@@ -107,9 +106,8 @@ int main(void)
     DebounceUpdate();
     EncoderUpdate();
     UpdateLeds();
-    NeoPixelUpdate();
 
-    //SendSerial();
+    SendSerial();
     
     /* Must throw away unused bytes from the host, or it will lock up while waiting for the device */
     CDC_Device_ReceiveByte(&VirtualSerial_CDC_Interface);
@@ -141,21 +139,8 @@ void SetupHardware(void)
   PORTE |= (1<<2);
   PORTB |= (1<<0) | (1<<4) | (1<<5) | (1<<7);
   
-  /* Set all LEDs to white initially */
-  NeoPixelInit();
-  NeoPixelSetPixelColor(0, 100, 100, 100);
-  NeoPixelSetPixelColor(1, 100, 100, 100);
-  NeoPixelSetPixelColor(2, 100, 100, 100);
-  NeoPixelSetPixelColor(3, 100, 100, 100);
-  NeoPixelSetPixelColor(4, 100, 100, 100);
-  NeoPixelSetPixelColor(5, 100, 100, 100);
-  NeoPixelSetPixelColor(6, 100, 100, 100);
-  NeoPixelSetPixelColor(7, 100, 100, 100);
-  NeoPixelSetPixelColor(8, 100, 100, 100);
-  NeoPixelSetPixelColor(9, 100, 100, 100);
-  NeoPixelSetPixelColor(10, 100, 100, 100);
-  NeoPixelSetPixelColor(11, 100, 100, 100);
-  NeoPixelSetBrightness(100);
+  /* Set all LEDs to off color initially */
+  InitLeds();
   
   USB_Init();  
 }
@@ -163,8 +148,7 @@ void SetupHardware(void)
 /** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */
 void SendSerial(void)
 {
-  static uint8_t color = 100;
-  char ReportString[30];
+  char ReportString[70];
   
   uint8_t leftdelta = EncoderGetLeftDelta();
   uint8_t rightdelta = EncoderGetRightDelta();
@@ -174,6 +158,9 @@ void SendSerial(void)
 	///* Write the string to the virtual COM port via the created character stream */
 	fputs(ReportString, &USBSerialStream);
   }
+  
+  sprintf(ReportString, "Debounce Stats: avg(%u) min(%u) max(%u) 4us counts", debounce_stats.avg, debounce_stats.min, debounce_stats.max);
+  fputs(ReportString, &USBSerialStream);
 
   /* Alternatively, without the stream: */
   // CDC_Device_SendString(&VirtualSerial_CDC_Interface, ReportString);
