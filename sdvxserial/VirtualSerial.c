@@ -100,12 +100,11 @@ int main(void)
 
   GlobalInterruptEnable();
 
-  for (;;)
+  while(1)
   {
-    //Delay_MS(1);
     DebounceUpdate();
     EncoderUpdate();
-    UpdateLeds();
+    LedUpdate();
 
     SendSerial();
     
@@ -129,37 +128,35 @@ void SetupHardware(void)
 
   /* Disable clock division */
   clock_prescale_set(clock_div_1);
-
-  /* Hardware Initialization */
-  EncoderInit();
-  DebounceInit();
   
   /* Configure all button pins to use internal pullup */
   PORTD |= (1<<7) | (1<<4) | (1<<2) | (1<<0) | (1<<6) | (1<<1);
   PORTE |= (1<<2);
   PORTB |= (1<<0) | (1<<4) | (1<<5) | (1<<7);
-  
-  /* Set all LEDs to off color initially */
-  InitLeds();
+
+  /* Subsystem Initialization */
+  EncoderInit();
+  DebounceInit();
+  LedInit();
   
   USB_Init();  
 }
 
-/** Checks for changes in the position of the board joystick, sending strings to the host upon each change. */
+/** Send debug information over serial */
 void SendSerial(void)
 {
   char ReportString[70];
-  
+  /*
   uint8_t leftdelta = EncoderGetLeftDelta();
   uint8_t rightdelta = EncoderGetRightDelta();
   
   if (leftdelta || rightdelta) {
-    sprintf(ReportString, "Left: %i, Right: %i\r\n", leftdelta, rightdelta);
-	///* Write the string to the virtual COM port via the created character stream */
-	fputs(ReportString, &USBSerialStream);
+    sprintf(ReportString, "Left: %i, Right: %i ", leftdelta, rightdelta);
+		fputs(ReportString, &USBSerialStream);
   }
+  */
   
-  sprintf(ReportString, "Debounce Stats: avg(%u) min(%u) max(%u) 4us counts", debounce_stats.avg, debounce_stats.min, debounce_stats.max);
+  sprintf(ReportString, "Debounce Stats: avg(%u) min(%u) max(%u) 4us counts\r\n", debounce_stats.avg, debounce_stats.min, debounce_stats.max);
   fputs(ReportString, &USBSerialStream);
 
   /* Alternatively, without the stream: */
@@ -252,6 +249,9 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
 	  MouseReport->Y = EncoderGetRightDelta();
 	  MouseReport->X = EncoderGetLeftDelta();
     
+    EncoderResetLeftDelta();
+    EncoderResetRightDelta();
+    
 	  *ReportSize = sizeof(USB_MouseReport_Data_t);
 	  return true;
   }
@@ -288,5 +288,5 @@ void EVENT_CDC_Device_ControLineStateChanged(USB_ClassInfo_CDC_Device_t *const C
 	   application blocking while waiting for a host to become ready and read
 	   in the pending data from the USB endpoints.
 	*/
-	bool HostReady = (CDCInterfaceInfo->State.ControlLineStates.HostToDevice & CDC_CONTROL_LINE_OUT_DTR) != 0;
+	//bool HostReady = (CDCInterfaceInfo->State.ControlLineStates.HostToDevice & CDC_CONTROL_LINE_OUT_DTR) != 0;
 }

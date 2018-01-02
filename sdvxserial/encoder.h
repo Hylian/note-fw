@@ -7,6 +7,8 @@
 void EncoderInit(void);
 void EncoderUpdate(void);
 int8_t EncoderGetLeftDelta(void);
+void EncoderResetLeftDelta(void);
 int8_t EncoderGetRightDelta(void);
+void EncoderResetRightDelta(void);
 
 #endif /* ENCODER_H_ */

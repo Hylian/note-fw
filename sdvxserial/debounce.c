@@ -1,9 +1,11 @@
 #include "debounce.h"
 #include <avr/io.h>
+#include <stdint.h>
+#include <stdbool.h>
 
 #define DEBOUNCE_TIMER_COMPARE_COUNT   63 // 0.25 ms @ 250 kHz
 #define DEBOUNCE_TRIGGER_COUNT_BUTTON  3
-#define DEBOUNCE_TRIGGER_COUNT_ENCODER 2
+#define DEBOUNCE_TRIGGER_COUNT_ENCODER 1
 
 typedef struct {
 	uint8_t count;
@@ -135,7 +137,7 @@ void DebounceUpdate(void)
         pr->count = 0;
       }
     }
-	// Reset sample timer
+    // Reset sample timer
     TIFR0 = (1 << OCF0A);
     TCNT0 = 0;
     stat_previous_cnt = 0;

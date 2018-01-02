@@ -1,4 +1,8 @@
 #include "led.h"
+
+#include <stdint.h>
+#include <stdbool.h>
+
 #include "debounce.h"
 #include "neopixel.h"
 
@@ -71,7 +75,7 @@ static sButtonRef buttons[NUM_BUTTONS] =
 	}
 };
 
-void InitLeds(void)
+void LedInit(void)
 {
   NeoPixelInit();
   for (int i = 0; i < NUM_BUTTONS; i++) {
@@ -81,15 +85,16 @@ void InitLeds(void)
   NeoPixelUpdate();
 }
 
-void UpdateLeds(void)
+void LedUpdate(void)
 {
   bool neopixel_update_required = false;
 
   for (int i = 0; i < NUM_BUTTONS; i++) {
     bool button_level = DebounceGetLevel(buttons[i].pinId);
-    bool button_update_required = ((!button_level) != buttons[i].state);
+    bool button_update_required = (button_level != buttons[i].state);
   
 	  if (button_update_required) {
+      buttons[i].state = button_level;
 	    neopixel_update_required = true;
       if (button_level) {
         NeoPixelSetPixelColor(buttons[i].led1, buttons[i].color_off.r, buttons[i].color_off.g, buttons[i].color_off.b);

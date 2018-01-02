@@ -40,14 +40,20 @@ void EncoderUpdate(void)
 
 int8_t EncoderGetLeftDelta(void)
 {
-  int8_t ret = delta_left;
+  return delta_left;
+}
+
+void EncoderResetLeftDelta(void)
+{
   delta_left = 0;
-  return ret;
 }
 
 int8_t EncoderGetRightDelta(void)
 {
-  int8_t ret = delta_right;
+  return delta_right;
+}
+
+void EncoderResetRightDelta(void)
+{
   delta_right = 0;
-  return ret;
 }
