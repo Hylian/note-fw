@@ -9,8 +9,8 @@
 static uint8_t old_AB_left = 0;
 static uint8_t old_AB_right = 0;
 static const int8_t enc_states[] = {0,-1,1,0,1,0,0,-1,-1,0,0,1,0,1,-1,0};
-int8_t delta_left = 0;
-int8_t delta_right = 0;
+static int8_t delta_left = 0;
+static int8_t delta_right = 0;
 
 void EncoderInit(void)
 {

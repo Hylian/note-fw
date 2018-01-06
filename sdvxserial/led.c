@@ -23,6 +23,10 @@ typedef struct {
   sLedColor color_off;
 } sButtonRef;
 
+#define COLOR_OFF   {100, 100, 100}
+#define COLOR_ON_BT {52, 108, 239}
+#define COLOR_ON_FX {252, 178, 20}
+
 static sButtonRef buttons[NUM_BUTTONS] =
 {
   {
@@ -30,48 +34,48 @@ static sButtonRef buttons[NUM_BUTTONS] =
     .state = false,
     .led1 = 3,
     .led2 = 4,
-    .color_on = {0, 0, 255},
-    .color_off = {100, 100, 100}
+    .color_on = COLOR_ON_BT,
+    .color_off = COLOR_OFF
   },
   {
     .pinId = BT_B,
     .state = false,
     .led1 = 2,
     .led2 = 5,
-    .color_on = {0, 0, 255},
-    .color_off = {100, 100, 100}
+    .color_on = COLOR_ON_BT,
+    .color_off = COLOR_OFF
   },
   {
     .pinId = BT_C,
     .state = false,
     .led1 = 1,
     .led2 = 6,
-    .color_on = {0, 0, 255},
-    .color_off = {100, 100, 100}
+    .color_on = COLOR_ON_BT,
+    .color_off = COLOR_OFF
   },
   {
     .pinId = BT_D,
     .state = false,
     .led1 = 0,
     .led2 = 7,
-    .color_on = {0, 0, 255},
-    .color_off = {100, 100, 100}
+    .color_on = COLOR_ON_BT,
+    .color_off = COLOR_OFF
   },
   {
     .pinId = FX_L,
     .state = false,
     .led1 = 9,
     .led2 = 10,
-    .color_on = {255, 0, 0},
-    .color_off = {100, 100, 100}
+    .color_on = COLOR_ON_FX,
+    .color_off = COLOR_OFF
   },
   {
     .pinId = FX_R,
     .state = false,
     .led1 = 8,
     .led2 = 11,
-    .color_on = {255, 0, 0},
-    .color_off = {100, 100, 100}
+    .color_on = COLOR_ON_FX,
+    .color_off = COLOR_OFF
   }
 };
 
