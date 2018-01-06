@@ -91,15 +91,14 @@ void LedUpdate(void)
 
   for (int i = 0; i < NUM_BUTTONS; i++) {
     bool button_level = DebounceGetLevel(buttons[i].pinId);
-    bool button_update_required = (button_level != buttons[i].state);
     
-    if (button_update_required) {
+    if (button_level != buttons[i].state) {
       buttons[i].state = button_level;
       neopixel_update_required = true;
       if (button_level) {
         NeoPixelSetPixelColor(buttons[i].led1, buttons[i].color_off.r, buttons[i].color_off.g, buttons[i].color_off.b);
         NeoPixelSetPixelColor(buttons[i].led2, buttons[i].color_off.r, buttons[i].color_off.g, buttons[i].color_off.b);
-        } else {
+      } else {
         NeoPixelSetPixelColor(buttons[i].led1, buttons[i].color_on.r, buttons[i].color_on.g, buttons[i].color_on.b);
         NeoPixelSetPixelColor(buttons[i].led2, buttons[i].color_on.r, buttons[i].color_on.g, buttons[i].color_on.b);
       }
