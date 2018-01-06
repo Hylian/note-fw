@@ -50,40 +50,40 @@ static uint8_t PrevMouseHIDReportBuffer[sizeof(USB_MouseReport_Data_t)];
  *  interface within the device.
  */
 USB_ClassInfo_HID_Device_t Keyboard_HID_Interface =
-	{
-		.Config =
-			{
-				.InterfaceNumber              = INTERFACE_ID_Keyboard,
-				.ReportINEndpoint             =
-					{
-						.Address              = KEYBOARD_IN_EPADDR,
-						.Size                 = HID_EPSIZE,
-						.Banks                = 1,
-					},
-				.PrevReportINBuffer           = PrevKeyboardHIDReportBuffer,
-				.PrevReportINBufferSize       = sizeof(PrevKeyboardHIDReportBuffer),
-			},
-	};
+  {
+    .Config =
+      {
+        .InterfaceNumber              = INTERFACE_ID_Keyboard,
+        .ReportINEndpoint             =
+          {
+            .Address              = KEYBOARD_IN_EPADDR,
+            .Size                 = HID_EPSIZE,
+            .Banks                = 1,
+          },
+        .PrevReportINBuffer           = PrevKeyboardHIDReportBuffer,
+        .PrevReportINBufferSize       = sizeof(PrevKeyboardHIDReportBuffer),
+      },
+  };
 
 /** LUFA HID Class driver interface configuration and state information. This structure is
  *  passed to all HID Class driver functions, so that multiple instances of the same class
  *  within a device can be differentiated from one another.
  */
 USB_ClassInfo_HID_Device_t Mouse_HID_Interface =
-	{
-		.Config =
-			{
-				.InterfaceNumber                = INTERFACE_ID_Mouse,
-				.ReportINEndpoint               =
-					{
-						.Address                = MOUSE_IN_EPADDR,
-						.Size                   = HID_EPSIZE,
-						.Banks                  = 1,
-					},
-				.PrevReportINBuffer             = PrevMouseHIDReportBuffer,
-				.PrevReportINBufferSize         = sizeof(PrevMouseHIDReportBuffer),
-			},
-	};
+  {
+    .Config =
+      {
+        .InterfaceNumber                = INTERFACE_ID_Mouse,
+        .ReportINEndpoint               =
+          {
+            .Address                = MOUSE_IN_EPADDR,
+            .Size                   = HID_EPSIZE,
+            .Banks                  = 1,
+          },
+        .PrevReportINBuffer             = PrevMouseHIDReportBuffer,
+        .PrevReportINBufferSize         = sizeof(PrevMouseHIDReportBuffer),
+      },
+  };
 
 /** Main program entry point. This routine contains the overall program flow, including initial
  *  setup of all components and the main program loop.
@@ -152,7 +152,7 @@ void SendSerial(void)
   
   if (leftdelta || rightdelta) {
     sprintf(ReportString, "Left: %i, Right: %i ", leftdelta, rightdelta);
-		fputs(ReportString, &USBSerialStream);
+    fputs(ReportString, &USBSerialStream);
   }
   */
   
@@ -176,13 +176,13 @@ void EVENT_USB_Device_Disconnect(void)
 /** Event handler for the library USB Configuration Changed event. */
 void EVENT_USB_Device_ConfigurationChanged(void)
 {
-	bool ConfigSuccess = true;
+  bool ConfigSuccess = true;
 
   ConfigSuccess &= HID_Device_ConfigureEndpoints(&Keyboard_HID_Interface);
-	ConfigSuccess &= HID_Device_ConfigureEndpoints(&Mouse_HID_Interface);
-	ConfigSuccess &= CDC_Device_ConfigureEndpoints(&VirtualSerial_CDC_Interface);
+  ConfigSuccess &= HID_Device_ConfigureEndpoints(&Mouse_HID_Interface);
+  ConfigSuccess &= CDC_Device_ConfigureEndpoints(&VirtualSerial_CDC_Interface);
   
-	USB_Device_EnableSOFEvents();
+  USB_Device_EnableSOFEvents();
 }
 
 /** Event handler for the library USB Control Request reception event. */
@@ -244,16 +244,16 @@ bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDIn
     *ReportSize = sizeof(USB_KeyboardReport_Data_t);
     return false;
   } else {
-	  USB_MouseReport_Data_t* MouseReport = (USB_MouseReport_Data_t*)ReportData;
+    USB_MouseReport_Data_t* MouseReport = (USB_MouseReport_Data_t*)ReportData;
     
-	  MouseReport->Y = EncoderGetRightDelta();
-	  MouseReport->X = EncoderGetLeftDelta();
+    MouseReport->Y = 16*EncoderGetRightDelta();
+    MouseReport->X = 16*EncoderGetLeftDelta();
     
     EncoderResetLeftDelta();
     EncoderResetRightDelta();
     
-	  *ReportSize = sizeof(USB_MouseReport_Data_t);
-	  return true;
+    *ReportSize = sizeof(USB_MouseReport_Data_t);
+    return true;
   }
   return false;
 }
@@ -272,7 +272,7 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
                                           const void* ReportData,
                                           const uint16_t ReportSize)
 {
-	// Unused (but mandatory for the HID class driver) in this demo, since there are no Host->Device reports
+  // Unused (but mandatory for the HID class driver) in this demo, since there are no Host->Device reports
 }
 
 /** CDC class driver callback function the processing of changes to the virtual
@@ -282,11 +282,11 @@ void CALLBACK_HID_Device_ProcessHIDReport(USB_ClassInfo_HID_Device_t* const HIDI
  */
 void EVENT_CDC_Device_ControLineStateChanged(USB_ClassInfo_CDC_Device_t *const CDCInterfaceInfo)
 {
-	/* You can get changes to the virtual CDC lines in this callback; a common
-	   use-case is to use the Data Terminal Ready (DTR) flag to enable and
-	   disable CDC communications in your application when set to avoid the
-	   application blocking while waiting for a host to become ready and read
-	   in the pending data from the USB endpoints.
-	*/
-	//bool HostReady = (CDCInterfaceInfo->State.ControlLineStates.HostToDevice & CDC_CONTROL_LINE_OUT_DTR) != 0;
+  /* You can get changes to the virtual CDC lines in this callback; a common
+     use-case is to use the Data Terminal Ready (DTR) flag to enable and
+     disable CDC communications in your application when set to avoid the
+     application blocking while waiting for a host to become ready and read
+     in the pending data from the USB endpoints.
+  */
+  //bool HostReady = (CDCInterfaceInfo->State.ControlLineStates.HostToDevice & CDC_CONTROL_LINE_OUT_DTR) != 0;
 }

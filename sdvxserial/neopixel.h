@@ -1,7 +1,6 @@
 #ifndef NEOPIXEL_H_
 #define NEOPIXEL_H_
 
-#include "neopixel.h"
 #include <stdint.h>
 
 void NeoPixelInit(void);

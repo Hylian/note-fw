@@ -36,27 +36,27 @@
 #ifndef _VIRTUALSERIAL_H_
 #define _VIRTUALSERIAL_H_
 
-	/* Includes: */
-		#include <avr/io.h>
-		#include <avr/wdt.h>
-		#include <avr/power.h>
-		#include <avr/interrupt.h>
-		#include <string.h>
-		#include <stdio.h>
+  /* Includes: */
+    #include <avr/io.h>
+    #include <avr/wdt.h>
+    #include <avr/power.h>
+    #include <avr/interrupt.h>
+    #include <string.h>
+    #include <stdio.h>
 
-		#include "Descriptors.h"
+    #include "Descriptors.h"
 
-		#include <LUFA/Drivers/USB/USB.h>
-		#include <LUFA/Platform/Platform.h>
+    #include <LUFA/Drivers/USB/USB.h>
+    #include <LUFA/Platform/Platform.h>
 
-	/* Function Prototypes: */
-		void SetupHardware(void);
-		void SendSerial(void);
+  /* Function Prototypes: */
+    void SetupHardware(void);
+    void SendSerial(void);
 
-		void EVENT_USB_Device_Connect(void);
-		void EVENT_USB_Device_Disconnect(void);
-		void EVENT_USB_Device_ConfigurationChanged(void);
-		void EVENT_USB_Device_ControlRequest(void);
+    void EVENT_USB_Device_Connect(void);
+    void EVENT_USB_Device_Disconnect(void);
+    void EVENT_USB_Device_ConfigurationChanged(void);
+    void EVENT_USB_Device_ControlRequest(void);
     void EVENT_USB_Device_StartOfFrame(void);
 
     bool CALLBACK_HID_Device_CreateHIDReport(USB_ClassInfo_HID_Device_t* const HIDInterfaceInfo,

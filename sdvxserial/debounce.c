@@ -8,103 +8,103 @@
 #define DEBOUNCE_TRIGGER_COUNT_ENCODER 1
 
 typedef struct {
-	uint8_t count;
-	const uint8_t trigger_count;
-	bool level;
-	const uint8_t mask;
-	const volatile uint8_t *port;
+  uint8_t count;
+  const uint8_t trigger_count;
+  bool level;
+  const uint8_t mask;
+  const volatile uint8_t *port;
 } sPinRef;
 
 static sPinRef pins[NUM_PINS] =
 {
-	{
-		/* ENC_LEFT_A */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
-		.level = 0,
-		.mask = (1 << 4),
-		.port = &PINB
-	},
-	{
-		/* ENC_LEFT_B */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
-		.level = 0,
-		.mask = (1 << 5),
-		.port = &PINB
-	},
-	{
-		/* ENC_RIGHT_A */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
-		.level = 0,
-		.mask = (1 << 0),
-		.port = &PINB
-	},
-	{
-		/* ENC_RIGHT_B */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
-		.level = 0,
-		.mask = (1 << 7),
-		.port = &PINB
-	},
-	{
-		/* BT_A */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
-		.level = 0,
-		.mask = (1 << 7),
-		.port = &PIND
-	},
-	{
-		/* BT_B */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
-		.level = 0,
-		.mask = (1 << 4),
-		.port = &PIND
-	},
-	{
-		/* BT_C */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
-		.level = 0,
-		.mask = (1 << 2),
-		.port = &PIND
-	},
-	{
-		/* BT_D */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
-		.level = 0,
-		.mask = (1 << 0),
-		.port = &PIND
-	},
-	{
-		/* FX-L */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
-		.level = 0,
-		.mask = (1 << 6),
-		.port = &PIND
-	},
-	{
-		/* FX-R */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
-		.level = 0,
-		.mask = (1 << 1),
-		.port = &PIND
-	},
-	{
-		/* Start */
-		.count = 0,
-		.trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
-		.level = 0,
-		.mask = (1 << 2),
-		.port = &PINE
-	},
+  {
+    /* ENC_LEFT_A */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
+    .level = 0,
+    .mask = (1 << 4),
+    .port = &PINB
+  },
+  {
+    /* ENC_LEFT_B */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
+    .level = 0,
+    .mask = (1 << 5),
+    .port = &PINB
+  },
+  {
+    /* ENC_RIGHT_A */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
+    .level = 0,
+    .mask = (1 << 0),
+    .port = &PINB
+  },
+  {
+    /* ENC_RIGHT_B */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
+    .level = 0,
+    .mask = (1 << 7),
+    .port = &PINB
+  },
+  {
+    /* BT_A */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_ENCODER,
+    .level = 0,
+    .mask = (1 << 7),
+    .port = &PIND
+  },
+  {
+    /* BT_B */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 4),
+    .port = &PIND
+  },
+  {
+    /* BT_C */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 2),
+    .port = &PIND
+  },
+  {
+    /* BT_D */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 0),
+    .port = &PIND
+  },
+  {
+    /* FX-L */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 6),
+    .port = &PIND
+  },
+  {
+    /* FX-R */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 1),
+    .port = &PIND
+  },
+  {
+    /* Start */
+    .count = 0,
+    .trigger_count = DEBOUNCE_TRIGGER_COUNT_BUTTON,
+    .level = 0,
+    .mask = (1 << 2),
+    .port = &PINE
+  },
 };
 
 void DebounceInit(void)
@@ -145,11 +145,11 @@ void DebounceUpdate(void)
     // Collect statistics on scheduling rate
     uint8_t current_cnt = TCNT0;
     if (current_cnt > stat_previous_cnt) {
-	    uint8_t delta = current_cnt - stat_previous_cnt;
-	    // Exponential moving average for simplicity
-	    debounce_stats.avg = 0.3 * delta + (1 - 0.3) * debounce_stats.avg;
-	    if (delta < debounce_stats.min) debounce_stats.min = delta;
-	    if (delta > debounce_stats.max) debounce_stats.max = delta;
+      uint8_t delta = current_cnt - stat_previous_cnt;
+      // Exponential moving average for simplicity
+      debounce_stats.avg = 0.3 * delta + (1 - 0.3) * debounce_stats.avg;
+      if (delta < debounce_stats.min) debounce_stats.min = delta;
+      if (delta > debounce_stats.max) debounce_stats.max = delta;
     }
   }
 }

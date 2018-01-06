@@ -7,9 +7,9 @@
 #include <stdbool.h>
 
 typedef struct {
-	uint8_t avg;
-	uint8_t min;
-	uint8_t max;
+  uint8_t avg;
+  uint8_t min;
+  uint8_t max;
 } sDebounceStats;
 
 extern sDebounceStats debounce_stats;
